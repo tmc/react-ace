@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 var ace = require('brace');
 var React = require('react');
 
@@ -15,6 +13,7 @@ module.exports = React.createClass({
     showGutter : React.PropTypes.bool,
     onChange: React.PropTypes.func,
     value: React.PropTypes.string,
+    cursorPos: React.PropTypes.number,
     onLoad: React.PropTypes.func,
     maxLines : React.PropTypes.number,
     readOnly : React.PropTypes.bool,
@@ -29,6 +28,7 @@ module.exports = React.createClass({
       height : '500px',
       width  : '500px',
       value  : '',
+      cursorPos  : -1,
       fontSize   : 12,
       showGutter : true,
       onChange   : null,
@@ -52,7 +52,7 @@ module.exports = React.createClass({
     this.editor.setTheme('ace/theme/'+this.props.theme);
     this.editor.setFontSize(this.props.fontSize);
     this.editor.on('change', this.onChange);
-    this.editor.setValue(this.props.value);
+    this.editor.setValue(this.props.value, this.props.cursorPos);
     this.editor.renderer.setShowGutter(this.props.showGutter);
     this.editor.setOption('maxLines', this.props.maxLines);
     this.editor.setOption('readOnly', this.props.readOnly);
@@ -74,7 +74,7 @@ module.exports = React.createClass({
     this.editor.setOption('highlightActiveLine', nextProps.highlightActiveLine);
     this.editor.setShowPrintMargin(nextProps.setShowPrintMargin);
     if (this.editor.getValue() !== nextProps.value) {
-      this.editor.setValue(nextProps.value);
+      this.editor.setValue(nextProps.value, nextProps.cursorPos);
     }
     this.editor.renderer.setShowGutter(nextProps.showGutter);
     if (nextProps.onLoad) {
@@ -87,6 +87,6 @@ module.exports = React.createClass({
       width: this.props.width,
       height: this.props.height
     };
-    return (<div id={this.props.name} onChange={this.onChange} style={divStyle}></div>);
+    return React.createElement('div', { id: this.props.name, onChange: this.onChange, style: divStyle });
   }
 });
