@@ -18,7 +18,8 @@ module.exports = React.createClass({
     maxLines : React.PropTypes.number,
     readOnly : React.PropTypes.bool,
     highlightActiveLine : React.PropTypes.bool,
-    showPrintMargin : React.PropTypes.bool
+    showPrintMargin : React.PropTypes.bool,
+    wordWrap : React.PropTypes.bool
   },
   getDefaultProps: function() {
     return {
@@ -36,7 +37,8 @@ module.exports = React.createClass({
       maxLines   : null,
       readOnly   : false,
       highlightActiveLine : true,
-      showPrintMargin     : true
+      showPrintMargin     : true,
+      wordWrap   : true
     };
   },
   onChange: function() {
@@ -58,6 +60,7 @@ module.exports = React.createClass({
     this.editor.setOption('readOnly', this.props.readOnly);
     this.editor.setOption('highlightActiveLine', this.props.highlightActiveLine);
     this.editor.setShowPrintMargin(this.props.setShowPrintMargin);
+    this.editor.getSession().setUseWrapMode(this.props.wordWrap);
 
     if (this.props.onLoad) {
       this.props.onLoad(this.editor);
@@ -73,6 +76,7 @@ module.exports = React.createClass({
     this.editor.setOption('readOnly', nextProps.readOnly);
     this.editor.setOption('highlightActiveLine', nextProps.highlightActiveLine);
     this.editor.setShowPrintMargin(nextProps.setShowPrintMargin);
+    this.editor.getSession().setUseWrapMode(this.props.wordWrap);
     if (this.editor.getValue() !== nextProps.value) {
       this.editor.setValue(nextProps.value, nextProps.cursorPos);
     }
